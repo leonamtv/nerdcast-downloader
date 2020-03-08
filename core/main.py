@@ -1,7 +1,8 @@
 from core.html_downloader import get_content
-from core.parser import get_section_by_class, get_href_by_tag, get_section_by_value, get_data_url
+from core.parser import *
+from core.util import check_day
 from env.environment import url_base, path_download
-from datetime import datetime
+from datetime import date
 import sys
 import subprocess
 
@@ -23,11 +24,14 @@ if len(links) > 0:
     url_download =  get_data_url(link_tag_download)
 
     if url_download:
-        bash_command = 'wget ' + url_download + ' -P ' + path_download +  ''
 
-        process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
+        if check_day( get_date ( sub_tree )):
+            bash_command = 'wget ' + url_download + ' -P ' + path_download +  ''
 
-        output, error = process.communicate()    
+            process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
 
+            output, error = process.communicate()    
+        else:
+            print('Nerdcast não foi lançado nesta semana')
 
 

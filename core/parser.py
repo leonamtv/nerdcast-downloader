@@ -35,6 +35,14 @@ def get_href_by_tag ( html_content: str, tag_type: str ):
     href_values = [ tag['href'] for tag in soup.findAll(tag_type, href=True)]
     return href_values
 
+def get_date ( html_content: str ):
+    """
+    Retorna o dia em que o último conteúdo foi postado
+    através de uma regex.
+    """
+    result = re.search(r'(?<=\\xe2\\x80\\xa2\\n)([0-9]+)(?= de)', html_content)
+    return int(result.group(0)) if result else None
+
 def get_data_url ( html_content: str ):
     """
     Busca a url do atributo 'data-url' através de uma
